@@ -10,11 +10,14 @@ from collections import OrderedDict
 
 import numpy
 import sortedcontainers
+from datetime import datetime
 
 class Server:
   def __init__(self):
      self.filesystem = {}
+     self.expirations = {}
   
+
   def performOperations(self, operations):
       results = []
       
@@ -29,6 +32,18 @@ class Server:
             result = self.getFile(args)
           case "FILE_COPY":
             result = self.copyFile(args)
+          case "FILE_SEARCH":
+            result = self.fileSearch(args)
+          case "FILE_UPLOAD_AT":
+            result = self.uploadFileAt(args)
+          case "FILE_GET_AT":
+            result = self.getFileAt(args)
+          case "FILE_COPY_AT":
+            result = self.copyFileAt(args)
+          case "FILE_SEARCH_AT":
+            result = self.fileSearchAt(args)
+          case "ROLLBACK":
+            result = self.rollback(args)
           case _:
             raise NotImplementedError
         
@@ -36,9 +51,9 @@ class Server:
       
       return results
 
+
   def uploadFile(self, args):
     file_name, size = args
-
     if self.filesystem.get(file_name):
       return "error: file already exists"
     
@@ -46,13 +61,15 @@ class Server:
 
     return f"uploaded {file_name}"
   
+
   def getFile(self, args):
     [file_name] = args
 
     if not self.filesystem.get(file_name):
       return "file not found"
     
-    return self.filesystem[file_name]
+    return f'got {file_name}'
+
 
   def copyFile(self, args):
     source, dest = args
@@ -64,6 +81,113 @@ class Server:
 
     return f'copied {source} to {dest}'
 
+
+  def fileSearch(self, args):
+    [prefix] = args
+
+    matches = []
+
+    for filename in self.filesystem.keys():
+      if filename.startswith(prefix):
+        matches.append(filename)
+    
+    matches.sort(key = self.fileSortKey, reverse=True)
+
+    return f'found [{", ".join(matches[:10])}]'
+
+
+  def fileSortKey(self, fileName):
+    size = self.filesystem[fileName]
+    intSize = int(size[:-2])
+    
+    return (intSize, fileName)
+
+
+  def uploadFileAt(self, args):
+    if len(args) == 3:
+      timestamp, file_name, size = args
+      ttl = None
+    else:
+      timestamp, file_name, size, ttl = args
+
+    if self.accessFileSystemWithTimestamp(file_name, timestamp):
+      return "error: file already exists"
+    
+
+    timestamp = datetime.strptime(timestamp, '%Y-%m-%dT%H:%M:%S').timestamp()
+
+    if ttl:
+      expiration = timestamp + int(ttl)
+    else:
+      expiration = float('inf')
+
+    self.expirations[file_name] = (expiration, timestamp)
+    
+    self.filesystem[file_name] = size
+
+    return f"uploaded at {file_name}"
+  
+
+  def getFileAt(self, args):
+    timestamp, file_name = args
+
+    if not self.accessFileSystemWithTimestamp(file_name, timestamp):
+      return "file not found"
+    
+    return f'got at {file_name}'
+
+
+  def copyFileAt(self, args):
+    timestamp, source, dest = args
+
+    if not self.accessFileSystemWithTimestamp(source, timestamp):
+      return "error: source file not found"
+    
+    self.filesystem[dest] = self.filesystem[source]
+
+    expiration = self.expirations.get(source)
+    if expiration:
+      self.expirations[dest] = expiration
+
+    return f'copied at {source} to {dest}'
+
+
+  def fileSearchAt(self, args):
+    timestamp, prefix = args
+
+    matches = []
+
+    for filename in self.filesystem.keys():
+      if filename.startswith(prefix):
+        if self.accessFileSystemWithTimestamp(filename, timestamp):
+          matches.append(filename)
+    
+    matches.sort(key = self.fileSortKey, reverse=True)
+
+    return f'found at [{", ".join(matches[:10])}]'
+
+
+  def accessFileSystemWithTimestamp(self, fileName, timestamp):
+    size = self.filesystem.get(fileName)
+
+    timestamp = datetime.strptime(timestamp, '%Y-%m-%dT%H:%M:%S').timestamp()
+
+    if not size:
+      return None
+  
+
+    if not self.expirations.get(fileName):
+      return size
+
+    expiration, written_at = self.expirations.get(fileName)
+    if expiration < timestamp or written_at > timestamp:
+      return None
+    
+    return size
+
+  def rollback(self, args):
+    [timestamp] = args
+    return f"rollback to {timestamp}"
 
 def simulate_coding_framework(list_of_lists):
     """

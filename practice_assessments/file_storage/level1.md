@@ -30,10 +30,15 @@ Example of file structure with various files:
 
 - **FILE_UPLOAD(file_name, size)**
   - Upload the file to the remote storage server.
-  - If a file with the same name already exists, return: `"error: file already exists"`.
+  - Return `"uploaded <file_name>"` on success.
+  - If a file with the same name already exists, return `"error: file already exists"`.
+
 - **FILE_GET(file_name)**
-  - Return the size of the file as a string, or `"file not found"` if the file doesn’t exist.
+  - Return `"got <file_name>"` if the file exists.
+  - If the file doesn’t exist, return `"file not found"`.
+
 - **FILE_COPY(source, dest)**
   - Copy the source file to a new location.
-  - If the source file doesn’t exist, return: `"error: source file not found"`.
-  - If the destination file already exists, overwrite the existing file.
+  - Return `"copied <source> to <dest>"` on success.
+  - If the source file doesn’t exist, return `"error: source file not found"`.
+  - If the destination file already exists, overwrite it.

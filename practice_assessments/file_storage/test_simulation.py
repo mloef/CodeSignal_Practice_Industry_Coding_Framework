@@ -94,7 +94,7 @@ class TestLevel2(unittest.TestCase):
             "uploaded TestFile.txt",
             "uploaded AnotherSearch.txt",
             "found []",
-            "found [Search1.txt, TestFile.txt, AnotherSearch.txt]"
+            "found [TestFile.txt, Search1.txt, AnotherSearch.txt]"
         ])
 
     def test_search_no_files(self):
@@ -150,7 +150,7 @@ class TestLevel3(unittest.TestCase):
             "uploaded at Mix1.txt",
             "uploaded at Mix2.txt",
             "copied at Mix1.txt to Mix1Copy.txt",
-            "found at [Mix1.txt, Mix1Copy.txt, Mix2.txt]",
+            "found at [Mix2.txt, Mix1Copy.txt, Mix1.txt]",
             "got at Mix2.txt",
             "file not found"
         ])
@@ -167,7 +167,7 @@ class TestLevel3(unittest.TestCase):
             "uploaded at SameTime1.txt",
             "uploaded at SameTime2.txt",
             "uploaded at SameTime3.txt",
-            "found at [SameTime2.txt, SameTime3.txt, SameTime1.txt]"
+            "found at [SameTime3.txt, SameTime2.txt, SameTime1.txt]"
         ])
 
     def test_complex_sequence(self):
@@ -184,7 +184,7 @@ class TestLevel3(unittest.TestCase):
             "uploaded Normal.txt",
             "uploaded at Temp.txt",
             "copied Normal.txt to NormalCopy.txt",
-            "found [Normal.txt, NormalCopy.txt]",
+            "found [NormalCopy.txt, Normal.txt]",
             "got at Temp.txt",
             "file not found"
         ])
