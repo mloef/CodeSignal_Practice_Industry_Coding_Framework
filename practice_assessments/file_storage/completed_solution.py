@@ -1,15 +1,3 @@
-import json
-import math
-import string
-import re
-import random
-import sys
-import traceback
-import functools
-from collections import OrderedDict
-
-import numpy
-import sortedcontainers
 from datetime import datetime
 
 class Server:
@@ -213,7 +201,7 @@ class Server:
 
     return f"rollback to {rollback_timestamp_string}"
 
-def simulate_coding_framework(list_of_lists):
+def solution(operations):
     """
     Simulates a file hosting service based on a series of operations.
 
@@ -255,7 +243,7 @@ def simulate_coding_framework(list_of_lists):
     Note: This function is a stub. You need to implement the full functionality according to the specifications.
 
     Parameters:
-      list_of_lists (List[List[str]]): A list of operations to perform.
+      operations (List[List[str]]): A list of operations to perform.
 
     Returns:
       List[str]: A list of output messages corresponding to each operation.
@@ -263,4 +251,4 @@ def simulate_coding_framework(list_of_lists):
     
     server = Server()
 
-    return server.performOperations(list_of_lists)
+    return server.performOperations(operations)

@@ -1,8 +1,8 @@
 import unittest
-from simulation import simulate_coding_framework
+from solution import solution
 
 # Level 1: Basic operations (FILE_UPLOAD, FILE_GET, FILE_COPY) and error conditions
-class TestLevel1(unittest.TestCase):
+class Level1(unittest.TestCase):
     def test_basic_operations(self):
         test_data = [
             ["FILE_UPLOAD", "FileA.txt", "100kb"],
@@ -10,7 +10,7 @@ class TestLevel1(unittest.TestCase):
             ["FILE_COPY", "FileA.txt", "FileB.txt"],
             ["FILE_GET", "FileB.txt"]
         ]
-        output = simulate_coding_framework(test_data)
+        output = solution(test_data)
         self.assertEqual(output, [
             "uploaded FileA.txt",
             "got FileA.txt",
@@ -25,7 +25,7 @@ class TestLevel1(unittest.TestCase):
             ["FILE_COPY", "NonExistent.txt", "Copy.txt"],
             ["FILE_GET", "NonExistent.txt"]
         ]
-        output = simulate_coding_framework(test_data)
+        output = solution(test_data)
         self.assertEqual(output, [
             "uploaded Duplicate.txt",
             "error: file already exists",
@@ -39,7 +39,7 @@ class TestLevel1(unittest.TestCase):
             ["FILE_COPY", "SelfCopy.txt", "SelfCopy.txt"],
             ["FILE_GET", "SelfCopy.txt"]
         ]
-        output = simulate_coding_framework(test_data)
+        output = solution(test_data)
         self.assertEqual(output, [
             "uploaded SelfCopy.txt",
             "copied SelfCopy.txt to SelfCopy.txt",
@@ -53,7 +53,7 @@ class TestLevel1(unittest.TestCase):
             ["FILE_COPY", "FileX.txt", "FileY.txt"],
             ["FILE_GET", "FileY.txt"]
         ]
-        output = simulate_coding_framework(test_data)
+        output = solution(test_data)
         self.assertEqual(output, [
             "uploaded FileX.txt",
             "uploaded FileY.txt",
@@ -62,7 +62,7 @@ class TestLevel1(unittest.TestCase):
         ])
 
 # Level 2: Data processing (FILE_SEARCH) and ordering
-class TestLevel2(unittest.TestCase):
+class Level2(unittest.TestCase):
     def test_search_ordering(self):
         test_data = [
             ["FILE_UPLOAD", "Alpha.txt", "50kb"],
@@ -71,7 +71,7 @@ class TestLevel2(unittest.TestCase):
             ["FILE_UPLOAD", "Alphabet.txt", "55kb"],
             ["FILE_SEARCH", "Al"]
         ]
-        output = simulate_coding_framework(test_data)
+        output = solution(test_data)
         self.assertEqual(output, [
             "uploaded Alpha.txt",
             "uploaded Alpine.txt",
@@ -88,7 +88,7 @@ class TestLevel2(unittest.TestCase):
             ["FILE_SEARCH", "NonExistent"],
             ["FILE_SEARCH", ""]
         ]
-        output = simulate_coding_framework(test_data)
+        output = solution(test_data)
         self.assertEqual(output, [
             "uploaded Search1.txt",
             "uploaded TestFile.txt",
@@ -101,7 +101,7 @@ class TestLevel2(unittest.TestCase):
         test_data = [
             ["FILE_SEARCH", "Any"]
         ]
-        output = simulate_coding_framework(test_data)
+        output = solution(test_data)
         self.assertEqual(output, [
             "found []"
         ])
@@ -112,7 +112,7 @@ class TestLevel2(unittest.TestCase):
             ["FILE_SEARCH", "T"],
             ["FILE_SEARCH", "t"]
         ]
-        output = simulate_coding_framework(test_data)
+        output = solution(test_data)
         self.assertEqual(output, [
             "uploaded Test.txt",
             "found [Test.txt]",
@@ -120,7 +120,7 @@ class TestLevel2(unittest.TestCase):
         ])
 
 # Level 3: Timestamped operations and TTL handling
-class TestLevel3(unittest.TestCase):
+class Level3(unittest.TestCase):
     def test_ttl_boundaries(self):
         test_data = [
             ["FILE_UPLOAD_AT", "2022-01-01T00:00:00", "TTLTest.txt", "200kb", "5"],
@@ -128,7 +128,7 @@ class TestLevel3(unittest.TestCase):
             ["FILE_GET_AT", "2022-01-01T00:00:05", "TTLTest.txt"],
             ["FILE_GET_AT", "2022-01-01T00:00:06", "TTLTest.txt"]
         ]
-        output = simulate_coding_framework(test_data)
+        output = solution(test_data)
         self.assertEqual(output, [
             "uploaded at TTLTest.txt",
             "got at TTLTest.txt",
@@ -145,7 +145,7 @@ class TestLevel3(unittest.TestCase):
             ["FILE_GET_AT", "2022-02-01T12:59:59", "Mix2.txt"],
             ["FILE_GET_AT", "2022-02-01T13:00:01", "Mix2.txt"]
         ]
-        output = simulate_coding_framework(test_data)
+        output = solution(test_data)
         self.assertEqual(output, [
             "uploaded at Mix1.txt",
             "uploaded at Mix2.txt",
@@ -162,7 +162,7 @@ class TestLevel3(unittest.TestCase):
             ["FILE_UPLOAD_AT", "2022-04-01T10:00:00", "SameTime3.txt", "150kb"],
             ["FILE_SEARCH_AT", "2022-04-01T10:00:00", "SameTime"]
         ]
-        output = simulate_coding_framework(test_data)
+        output = solution(test_data)
         self.assertEqual(output, [
             "uploaded at SameTime1.txt",
             "uploaded at SameTime2.txt",
@@ -179,7 +179,7 @@ class TestLevel3(unittest.TestCase):
             ["FILE_GET_AT", "2022-06-01T15:00:05", "Temp.txt"],
             ["FILE_GET_AT", "2022-06-01T15:00:11", "Temp.txt"]
         ]
-        output = simulate_coding_framework(test_data)
+        output = solution(test_data)
         self.assertEqual(output, [
             "uploaded Normal.txt",
             "uploaded at Temp.txt",
@@ -195,7 +195,7 @@ class TestLevel3(unittest.TestCase):
             ["FILE_GET_AT", "2022-07-01T11:00:00", "Infinite.txt"],
             ["FILE_GET_AT", "2022-07-01T12:00:00", "Infinite.txt"]
         ]
-        output = simulate_coding_framework(test_data)
+        output = solution(test_data)
         self.assertEqual(output, [
             "uploaded at Infinite.txt",
             "got at Infinite.txt",
@@ -207,7 +207,7 @@ class TestLevel3(unittest.TestCase):
             ["FILE_UPLOAD_AT", "2022-08-01T10:00:00", "DupFile.txt", "100kb"],
             ["FILE_UPLOAD_AT", "2022-08-01T10:05:00", "DupFile.txt", "150kb"]
         ]
-        output = simulate_coding_framework(test_data)
+        output = solution(test_data)
         self.assertEqual(output, [
             "uploaded at DupFile.txt",
             "error: file already exists"
@@ -217,7 +217,7 @@ class TestLevel3(unittest.TestCase):
         test_data = [
             ["FILE_COPY_AT", "2022-08-01T11:00:00", "Nonexistent.txt", "Copy.txt"]
         ]
-        output = simulate_coding_framework(test_data)
+        output = solution(test_data)
         self.assertEqual(output, [
             "error: source file not found"
         ])
@@ -227,7 +227,7 @@ class TestLevel3(unittest.TestCase):
             ["FILE_UPLOAD_AT", "2022-09-01T12:00:00", "LateFile.txt", "100kb"],
             ["FILE_GET_AT", "2022-09-01T11:59:59", "LateFile.txt"]
         ]
-        output = simulate_coding_framework(test_data)
+        output = solution(test_data)
         self.assertEqual(output, [
             "uploaded at LateFile.txt",
             "file not found"
@@ -238,7 +238,7 @@ class TestLevel3(unittest.TestCase):
             ["FILE_UPLOAD_AT", "2022-10-01T10:00:00", "ExpireFile.txt", "200kb", "5"],
             ["FILE_COPY_AT", "2022-10-01T10:00:06", "ExpireFile.txt", "ExpireFileCopy.txt"]
         ]
-        output = simulate_coding_framework(test_data)
+        output = solution(test_data)
         self.assertEqual(output, [
             "uploaded at ExpireFile.txt",
             "error: source file not found"
@@ -251,7 +251,7 @@ class TestLevel3(unittest.TestCase):
             ["FILE_COPY_AT", "2022-11-01T09:05:00", "SourceFile.txt", "DestFile.txt"],
             ["FILE_GET_AT", "2022-11-01T09:05:00", "DestFile.txt"]
         ]
-        output = simulate_coding_framework(test_data)
+        output = solution(test_data)
         self.assertEqual(output, [
             "uploaded at SourceFile.txt",
             "uploaded at DestFile.txt",
@@ -260,7 +260,7 @@ class TestLevel3(unittest.TestCase):
         ])
 
 # Level 4: Rollback operations
-class TestLevel4(unittest.TestCase):
+class Level4(unittest.TestCase):
     def test_rollback_functionality(self):
         test_data = [
             ["FILE_UPLOAD_AT", "2022-03-01T08:00:00", "Rollback1.txt", "120kb"],
@@ -270,7 +270,7 @@ class TestLevel4(unittest.TestCase):
             ["FILE_GET_AT", "2022-03-01T08:10:00", "Rollback2.txt"],
             ["FILE_SEARCH_AT", "2022-03-01T08:10:00", "Rollback"]
         ]
-        output = simulate_coding_framework(test_data)
+        output = solution(test_data)
         self.assertEqual(output, [
             "uploaded at Rollback1.txt",
             "uploaded at Rollback2.txt",
@@ -289,7 +289,7 @@ class TestLevel4(unittest.TestCase):
             ["FILE_COPY", "Multi1.txt", "Multi1Copy.txt"],
             ["FILE_SEARCH", "Multi"]
         ]
-        output = simulate_coding_framework(test_data)
+        output = solution(test_data)
         self.assertEqual(output, [
             "uploaded at Multi1.txt",
             "uploaded at Multi2.txt",
@@ -306,7 +306,7 @@ class TestLevel4(unittest.TestCase):
             ["ROLLBACK", "2022-12-01T10:00:00"],
             ["FILE_GET_AT", "2022-12-01T10:06:00", "TempTTL.txt"]
         ]
-        output = simulate_coding_framework(test_data)
+        output = solution(test_data)
         self.assertEqual(output, [
             "uploaded at TempTTL.txt",
             "got at TempTTL.txt",
@@ -320,7 +320,7 @@ class TestLevel4(unittest.TestCase):
             ["ROLLBACK", "2022-12-01T10:59:59"],
             ["FILE_GET_AT", "2022-12-01T11:00:00", "FutureFile.txt"]
         ]
-        output = simulate_coding_framework(test_data)
+        output = solution(test_data)
         self.assertEqual(output, [
             "uploaded at FutureFile.txt",
             "rollback to 2022-12-01T10:59:59",

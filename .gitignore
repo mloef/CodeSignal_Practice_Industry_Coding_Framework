@@ -1,4 +1,4 @@
 /.pytest_cache
 /.venv
 
-practice_assessments/**/__pycache__/*
+practice_assessments/**/__pycache__

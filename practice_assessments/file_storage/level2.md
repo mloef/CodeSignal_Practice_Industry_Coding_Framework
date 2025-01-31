@@ -1,30 +1,7 @@
 # Scenario
 
 Your task is to implement a simplified version of a file hosting service.
-All operations that should be supported are listed below. Partial credit will be granted for each test passed, so
-press “Submit” often to run tests and receive partial credits for passed tests. Please check tests for requirements
-and argument types.
-
-### Implementation Tips
-
-Read the entire question before coding. Implement the operations sequentially, starting with basic functions,
-and then adding additional features in subsequent levels.
-
-## Task
-
-Example of file structure with various files:
-
-```plaintext
-[server34] - 24000 Bytes Limit
-    Size
-    +- file-1.zip 4321 Bytes
-    +- dir-a
-    |   +- dir-c
-    |       +- file-2.txt 1100 Bytes
-    |       +- file-3.csv 2122 Bytes
-    +- dir-b
-        +- file-4.mdx 3378 Bytes
-```
+All operations that should be supported are listed below.
 
 ## Level 1 – Initial Design & Basic Functions
 

@@ -16,7 +16,7 @@ Before diving into the tasks and running the tests outlined in this guide, it's 
 
 > **Important Note**: CodeSignal utilizes Python Version **3.10.6** for its assessments.
 
-3. **Familiarity with Terminal or Command Prompt**: Basic knowledge of using the terminal (Mac/Linux) or command prompt (Windows) will be beneficial. You will need to use it to run the test scripts provided in the `test_simulation.py` file.
+3. **Familiarity with Terminal or Command Prompt**: Basic knowledge of using the terminal (Mac/Linux) or command prompt (Windows) will be beneficial. You will need to use it to run the test scripts provided in the `test_solution.py` file.
 
 4. **Install Required Python Packages**: Before starting with the tasks, it's essential to install the Python packages listed in the `requirements.txt` file. These packages include necessary libraries that might be used throughout the tasks in this guide. To install these packages, run the following command in your terminal or command prompt:
    ```
@@ -36,12 +36,12 @@ By ensuring these prerequisites are met, you will be well-prepared to engage wit
 1. **Timing**: Set a strict time limit of 90 minutes for yourself to complete the tasks ⏳. This practice is designed to simulate the time constraints often present in real assessments, fostering the development of effective time management skills.
 2. **Sequential Progression**: Start with Level 1 and do not advance to the subsequent level until you have fully completed the preceding one 🛤️. This methodical approach ensures a gradual and thorough understanding of the challenges presented.
 
-3. **Testing and Development Environment**: Focus your coding efforts within the `simulation.py` file 🖥️. This file is where you will implement your solutions and simulate the operations described in the tasks.
+3. **Testing and Development Environment**: Focus your coding efforts within the `solution.py` file 🖥️. This file is where you will implement your solutions and simulate the operations described in the tasks.
 
-4. **Running Tests**: Utilize the provided `test_simulation.py` file to run unit tests against your code 🧪. This file contains test cases for each level, allowing you to verify the correctness of your solutions incrementally. To run the tests for a specific level, use the following command structure in your terminal or command prompt:
+4. **Running Tests**: Utilize the provided `test_solution.py` file to run unit tests against your code 🧪. This file contains test cases for each level, allowing you to verify the correctness of your solutions incrementally. To run the tests for a specific level, use the following command structure in your terminal or command prompt:
 
-   - For Level 1 tests: `python3 -m unittest test_simulation.TestSimulateCodingFramework.test_group_1`
-   - For Level 2 tests: `python3 -m unittest test_simulation.TestSimulateCodingFramework.test_group_2`
+   - For all tests: `python3 -m unittest test_solution`
+   - For Level 1 tests: `python3 -m unittest test_solution.Level1`
    - For subsequent levels, adjust the `test_group_x` part of the command accordingly.
 
 5. **Refactoring**: As you progress through the levels, revisit and refactor your earlier solutions as needed to accommodate the additional functionality required by later tasks 🔧. This iterative process is key to developing scalable and maintainable software.
