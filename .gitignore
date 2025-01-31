@@ -1,4 +1,4 @@
 /.pytest_cache
 /.venv
-
+.DS_store
 practice_assessments/**/__pycache__
