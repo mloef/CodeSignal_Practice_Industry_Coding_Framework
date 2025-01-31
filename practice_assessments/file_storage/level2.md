@@ -7,9 +7,8 @@ and argument types.
 
 ### Implementation Tips
 
-Read the question all the way through before you start coding, but implement the operations and complete the
-levels one by one, not all together, keeping in mind that you will need to refactor to support additional functionality.
-Please, do not change the existing method signatures.
+Read the entire question before coding. Implement the operations sequentially, starting with basic functions,
+and then adding additional features in subsequent levels.
 
 ## Task
 
@@ -21,25 +20,27 @@ Example of file structure with various files:
     +- file-1.zip 4321 Bytes
     +- dir-a
     |   +- dir-c
-    |   |   +- file-2.txt 1100 Bytes
-    |   |   +- file-3.csv 2122 Bytes
+    |       +- file-2.txt 1100 Bytes
+    |       +- file-3.csv 2122 Bytes
     +- dir-b
-    |   +- file-4.mdx 3378 Bytes
+        +- file-4.mdx 3378 Bytes
 ```
 
 ## Level 1 – Initial Design & Basic Functions
 
 - **FILE_UPLOAD(file_name, size)**
   - Upload the file to the remote storage server.
-  - If a file with the same name already exists on the server, it throws a runtime exception.
+  - If a file with the same name already exists, return: `"error: file already exists"`.
 - **FILE_GET(file_name)**
-  - Returns the size of the file, or nothing if the file doesn’t exist.
+  - Return the size of the file as a string, or `"file not found"` if the file doesn’t exist.
 - **FILE_COPY(source, dest)**
   - Copy the source file to a new location.
-  - If the source file doesn’t exist, it throws a runtime exception.
-  - If the destination file already exists, it overwrites the existing file.
+  - If the source file doesn’t exist, return: `"error: source file not found"`.
+  - If the destination file already exists, overwrite the existing file.
 
 ## Level 2 – Data Structures & Data Processing
 
 - **FILE_SEARCH(prefix)**
-  - Find top 10 files starting with the provided prefix. Order results by their size in descending order, and in case of a tie by file name.
+  - Find the top 10 files whose names start with the provided prefix.
+  - Order results by file size in descending order, and in case of a tie, by file name in ascending order.
+  - Return the result in the format: `"found [file1, file2, ...]"`. If no files match, return `"found []"`.
