@@ -277,7 +277,7 @@ class TestLevel4(unittest.TestCase):
             "copied at Rollback1.txt to Rollback1Copy.txt",
             "rollback to 2022-03-01T08:05:00",
             "got at Rollback2.txt",
-            "found at [Rollback1.txt, Rollback2.txt]"
+            "found at [Rollback2.txt, Rollback1.txt]"
         ])
 
     def test_multiple_rollback(self):
@@ -296,7 +296,7 @@ class TestLevel4(unittest.TestCase):
             "rollback to 2022-05-01T09:00:00",
             "uploaded Multi3.txt",
             "copied Multi1.txt to Multi1Copy.txt",
-            "found [Multi1.txt, Multi1Copy.txt, Multi3.txt]"
+            "found [Multi3.txt, Multi1Copy.txt, Multi1.txt]"
         ])
 
     def test_rollback_ttl_adjustment(self):

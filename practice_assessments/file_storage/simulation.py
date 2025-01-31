@@ -21,7 +21,7 @@ class Server:
   def performOperations(self, operations):
       results = []
       
-      for operation in operations:
+      for i, operation in enumerate(operations):
         operation_name = operation[0]
         args = operation[1:]
 
@@ -43,7 +43,7 @@ class Server:
           case "FILE_SEARCH_AT":
             result = self.fileSearchAt(args)
           case "ROLLBACK":
-            result = self.rollback(args)
+            result = self.rollback(operations, i, args)
           case _:
             raise NotImplementedError
         
@@ -185,9 +185,33 @@ class Server:
     
     return size
 
-  def rollback(self, args):
-    [timestamp] = args
-    return f"rollback to {timestamp}"
+  def rollback(self, operations, rollback_index, args):
+    [rollback_timestamp_string] = args
+    rollback_timestamp = datetime.strptime(rollback_timestamp_string, '%Y-%m-%dT%H:%M:%S').timestamp()
+
+    previous_ops = operations[:rollback_index]
+
+    post_rollback_ops = []
+
+    for operation in previous_ops:
+        args = operation[1:]
+
+        possible_timestamp = args[0]
+        try:
+          op_timestamp = datetime.strptime(possible_timestamp, '%Y-%m-%dT%H:%M:%S').timestamp()
+        except NotImplementedError:
+          # not a timestamped op, throw it on
+          post_rollback_ops.append(operation)
+          continue
+        
+        if op_timestamp <= rollback_timestamp:
+          post_rollback_ops.append(operation)
+          continue
+      
+    self.__init__()
+    self.performOperations(post_rollback_ops)
+
+    return f"rollback to {rollback_timestamp_string}"
 
 def simulate_coding_framework(list_of_lists):
     """
