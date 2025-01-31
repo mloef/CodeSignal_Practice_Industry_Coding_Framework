@@ -2,6 +2,6 @@
 
 # Implement your solution here.
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     # Entry point for manual testing
-    pass 
+    pass
