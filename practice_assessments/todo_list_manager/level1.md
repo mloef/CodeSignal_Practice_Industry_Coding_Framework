@@ -1,25 +1,36 @@
-# Level 1: Basic Task Creation and Listing
+# Scenario
 
-## Objective
-Implement the foundational classes to handle tasks.
+Your task is to implement a simplified version of a to-do list manager. All methods described below should be implemented in the provided `solution.py` file.
 
-## Requirements
+## Level 1 – Basic Task Creation and Listing
 
-### Task Class
-- Must represent a single to-do task.
-- Attributes:
-  - `title` (string): The name/summary of the task.
-  - `description` (string): Additional details about the task.
-- (Optionally) Include an internal unique identifier for each task for future updates and deletions.
+### Operations
 
-### TaskManager Class
-- Responsible for managing a collection of tasks.
-- Must include:
-  - A method to add a new task.
-  - A method to list all tasks.
-- Edge Cases:
-  - Validate that tasks have non-empty title and description.
+- **add_task(title, description)**
+  - **Purpose:** Create a new task with a given title and description.
+  - **Requirements:**
+    - Both `title` and `description` must be non-empty strings.
+    - If either `title` or `description` is empty, return the string: `"error: invalid task data"`.
+    - On success, return the string: `"task added: <title>"` where `<title>` is the title of the task.
 
-## Design Considerations
-- Ensure proper encapsulation and separation between data representation (Task) and management logic (TaskManager).
-- Avoid pitfalls like exposing internal data structures directly. 
+- **list_tasks()**
+  - **Purpose:** Return a list of all tasks in the order they were added.
+  - **Requirements:**
+    - The list should include the titles of the tasks.
+    - The output must be formatted exactly as a string representing a list, e.g., `"[Buy milk, Call John]"`.
+    - If no tasks exist, return `"[]"`.
+
+### Example
+
+1. Calling `add_task("Buy milk", "Get 2% milk")` should return:
+   ```
+   task added: Buy milk
+   ```
+2. Calling `add_task("Call John", "Discuss the project")` should return:
+   ```
+   task added: Call John
+   ```
+3. After adding the tasks above, calling `list_tasks()` should return:
+   ```
+   [Buy milk, Call John]
+   ```
