@@ -1,16 +1,7 @@
-# Scenario
-
-Your task is to extend the to-do list manager with advanced data processing capabilities.
-
-## Level 2 – Data Structures & Data Processing
-
-- **TASK_SEARCH(prefix)**
-  - Find the top 10 tasks whose titles start with the provided prefix.
-  - Order the tasks by the length of their description in descending order, and in case of a tie, by the task title in descending order.
-  - Return the result in the format: "found [task1, task2, ...]". If no tasks match, return "found []".
+# Level 2: Updating and Deleting Tasks
 
 ## Objective
-Extend the basic task management functionality to allow efficient search and ordering based on task attributes.
+Extend the system to support modifying existing tasks through updates and deletions.
 
 ## Requirements
 

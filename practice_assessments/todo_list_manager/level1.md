@@ -1,24 +1,4 @@
-# Scenario
-
-Your task is to implement a simplified version of a to-do list manager.
-All operations that should be supported are listed below.
-
-## Level 1 – Basic Task Creation & Listing
-
-- **TASK_CREATE(title, description)**
-  - Create a new task with the provided title and description.
-  - Return "created <title>" on success.
-  - If a task with the same title already exists, return "error: task already exists".
-
-- **TASK_GET(title)**
-  - Return "got <title>" if the task exists.
-  - If the task doesn't exist, return "task not found".
-
-- **TASK_COPY(source_title, new_title)**
-  - Duplicate the source task under a new title.
-  - Return "copied <source_title> to <new_title>" on success.
-  - If the source task doesn't exist, return "error: source task not found".
-  - If a task with the new title already exists, overwrite it.
+# Level 1: Basic Task Creation and Listing
 
 ## Objective
 Implement the foundational classes to handle tasks.
