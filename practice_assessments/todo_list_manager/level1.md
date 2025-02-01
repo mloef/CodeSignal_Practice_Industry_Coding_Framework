@@ -1,36 +1,63 @@
-# Scenario
+# Level 1 – Basic Add and List
 
-Your task is to implement a simplified version of a to-do list manager. All methods described below should be implemented in the provided `solution.py` file.
+In this initial level, you must implement two functions:
 
-## Level 1 – Basic Task Creation and Listing
+1. `add_task(title, description)`
+2. `list_tasks()`
 
-### Operations
+No unique ID is involved yet.
 
-- **add_task(title, description)**
-  - **Purpose:** Create a new task with a given title and description.
-  - **Requirements:**
-    - Both `title` and `description` must be non-empty strings.
-    - If either `title` or `description` is empty, return the string: `"error: invalid task data"`.
-    - On success, return the string: `"task added: <title>"` where `<title>` is the title of the task.
+---
 
-- **list_tasks()**
-  - **Purpose:** Return a list of all tasks in the order they were added.
-  - **Requirements:**
-    - The list should include the titles of the tasks.
-    - The output must be formatted exactly as a string representing a list, e.g., `"[Buy milk, Call John]"`.
-    - If no tasks exist, return `"[]"`.
+## 1. `add_task(title, description)`
 
-### Example
+**Purpose**
+Create a new task using the two string parameters `title` and `description`.
 
-1. Calling `add_task("Buy milk", "Get 2% milk")` should return:
+**Expected Behavior**
+1. If either `title` or `description` is an empty string, return:
    ```
-   task added: Buy milk
+   error: invalid task data
    ```
-2. Calling `add_task("Call John", "Discuss the project")` should return:
+2. Otherwise, return:
    ```
-   task added: Call John
+   task added: <title>
    ```
-3. After adding the tasks above, calling `list_tasks()` should return:
-   ```
-   [Buy milk, Call John]
-   ```
+   where `<title>` is replaced by the task’s title.
+
+**Example Usage**
+```
+add_task("Buy milk", "Get 2% milk")
+→ "task added: Buy milk"
+```
+
+---
+
+## 2. `list_tasks()`
+
+**Purpose**
+Return all task titles in the order they were added.
+
+**Expected Behavior**
+- If tasks exist, return them in a Python-style list of titles, for example:
+  ```
+  [Buy milk, Call John]
+  ```
+- If no tasks exist, return:
+  ```
+  []
+  ```
+
+**Example Usage**
+```
+list_tasks()
+→ "[Buy milk, Call John]"
+```
+
+---
+
+## Important Notes
+
+- **No unique identifiers** (IDs) are introduced at this level.
+- A naive design might simply store `(title, description)` pairs in a list, which is sufficient for Level 1.
+- Your return strings must match exactly. Even small formatting differences can cause test failures.

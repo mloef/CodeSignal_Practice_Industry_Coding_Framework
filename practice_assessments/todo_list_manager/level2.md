@@ -1,36 +1,65 @@
-# Scenario
+# Level 2 – Title-Based Update and Delete (Duplicates Possible)
 
-Your task is to extend the to-do list manager to support modifications on existing tasks. All methods described below should be implemented in the provided `solution.py` file.
+In this level, you will **extend** the functionality from Level 1. You must retain the exact behavior of:
 
-## Level 2 – Updating and Deleting Tasks
+- `add_task(title, description)` (unchanged from Level 1; do not alter its return string or logic).
+- `list_tasks()`
 
-### Operations
+Now you must introduce:
 
-- **update_task(task_id, new_title, new_description)**
-  - **Purpose:** Update an existing task's title and description.
-  - **Requirements:**
-    - The task is identified by its unique `task_id` (an integer).
-    - Both `new_title` and `new_description` must be non-empty strings.
-    - If the task with the given `task_id` does not exist, return `"error: task not found"`.
-    - If either `new_title` or `new_description` is empty, return `"error: invalid task data"`.
-    - On success, update the task's title and description, and return `"task updated: <task_id>"`.
+1. `update_task(title, new_title, new_description)`
+2. `delete_task(title)`
 
-- **delete_task(task_id)**
-  - **Purpose:** Delete an existing task.
-  - **Requirements:**
-    - The task is identified by its unique `task_id`.
-    - If the task with the given `task_id` does not exist, return `"error: task not found"`.
-    - On success, remove the task from the list and return `"task deleted: <task_id>"`.
+---
 
-### Example
+## 1. `update_task(title, new_title, new_description)`
 
-Assume a task with `task_id` 1 exists:
-- Calling `update_task(1, "New Title", "New Description")` should return:
-  ```
-  task updated: 1
-  ```
-- Calling `delete_task(1)` should return:
-  ```
-  task deleted: 1
-  ```
-If a task with the provided `task_id` does not exist, the corresponding function should return the appropriate error message.
+**Purpose**
+Update the first task whose current title is exactly `title`.
+
+**Expected Behavior**
+1. If `new_title` or `new_description` is empty, return:
+   ```
+   error: invalid task data
+   ```
+2. If no task with the specified `title` exists, return:
+   ```
+   error: task not found
+   ```
+3. Otherwise, update that task’s title and description, and return:
+   ```
+   task updated: <title>
+   ```
+   Here, `<title>` refers to the **old** title used to find the task.
+
+**Handling Duplicates**
+- If multiple tasks share the same title, only update the **first** match in the order they were added.
+
+---
+
+## 2. `delete_task(title)`
+
+**Purpose**
+Delete the first task whose title matches `title`.
+
+**Expected Behavior**
+1. If no task with the specified `title` exists, return:
+   ```
+   error: task not found
+   ```
+2. Otherwise, remove that first matching task and return:
+   ```
+   task deleted: <title>
+   ```
+   (where `<title>` is the original title used to locate the task).
+
+**Handling Duplicates**
+- If multiple tasks share the same title, only delete the **first** match.
+
+---
+
+## Important Notes
+
+- You **may not** modify the existing `add_task` or `list_tasks` outputs. They must behave exactly as they did in Level 1.
+- This level intentionally does **not** use IDs. Tasks are identified only by their title, which can lead to collisions.
+- You are free to store tasks however you like, but you must handle the possibility that multiple tasks share the same title.
