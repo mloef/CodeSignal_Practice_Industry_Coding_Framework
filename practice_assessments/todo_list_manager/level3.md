@@ -1,13 +1,10 @@
 # Level 3 – Introducing IDs (While Keeping Title-Based Methods)
 
-Level 3 adds **unique IDs** to your tasks for the first time. You must still keep all methods from Levels 1 and 2 fully functional, but now with two major changes:
-
-1. `add_task(title, description)` must change its return string to include the newly assigned ID.
-2. You must add ID-based update/delete methods, while retaining the old title-based ones.
+Level 3 adds **unique IDs** to your tasks for the first time. You must still keep all methods from Levels 1 and 2 fully functional, but now you must add ID-based add/update/delete methods.
 
 ---
 
-## 1. Revised `add_task(title, description)`
+## 1. `add_task_id(title, description)`
 
 **New Expected Behavior**
 1. If `title` or `description` is empty, return:
@@ -20,10 +17,6 @@ Level 3 adds **unique IDs** to your tasks for the first time. You must still kee
    ```
    - `<title>` is the given title.
    - `<task_id>` is the integer ID assigned to the newly created task.
-
-**Note**
-- This **overrides** Level 1’s return value for `add_task`. If you are testing Level 3 directly, your code must produce the new format.
-- If tasks existed before Level 3, they must also be given IDs retroactively so that all tasks have IDs.
 
 ---
 
@@ -41,7 +34,7 @@ Update a task using its integer ID.
    ```
    error: task not found
    ```
-3. Otherwise, update the task’s title/description and return:
+3. Otherwise, update the task's title and description and return:
    ```
    task updated: <task_id>
    ```
@@ -65,10 +58,33 @@ Delete a task using its integer ID.
 
 ---
 
+## 4. `get_task_id(task_id)`
+
+**Purpose**
+Return the task's title and description for the task with the given `task_id`.
+
+**Expected Behavior**
+1. If a task with the matching `task_id` exists, return:
+   ```
+   <title>, <description>
+   ```
+2. If no such task exists, return:
+   ```
+   error: task not found
+   ```
+
+**Example Usage**
+```
+add_task("Buy milk", "Get 2% milk")  // Suppose this is assigned id 1
+get_task_id(1)
+→ "Buy milk, Get 2% milk"
+```
+
+---
+
 ## Important Notes
 
-- You must not remove the existing `update_task(title, new_title, new_description)` or `delete_task(title)` from Level 2. They must remain valid, referencing tasks by title.
+- You must not remove the existing title-based methods (`add_task(title, description)`, `update_task(title, new_title, new_description)`, `delete_task(title)`, and `get_task(title)`) from Levels 1 and 2. They must remain valid.
 - Now that tasks have IDs, you must maintain **two** different ways to locate them:
-  1. By **title** (Level 2).
-  2. By **task_id** (new in Level 3).
-- The updated `add_task` output must match exactly: `"task added: <title>, id: <task_id>"`.
+  1. By **title** (Level 2 and `get_task` defined above).
+  2. By **task_id** (new in Level 3 via `update_task_id`, `delete_task_id`, and `get_task_id`).

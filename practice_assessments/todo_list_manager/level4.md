@@ -18,7 +18,7 @@ In this final level, you combine multiple new features on top of the existing co
      ```
      error: invalid priority
      ```
-  3. Otherwise, set the task’s priority and return:
+  3. Otherwise, set the task's priority and return:
      ```
      priority set: <task_id>
      ```
@@ -45,7 +45,7 @@ In this final level, you combine multiple new features on top of the existing co
 
 ## 2. Adding Due Dates
 
-### Revised `add_task(title, description, [due_date])`
+### Revised `add_task_id(title, description, [due_date])`
 - **Purpose**: Optionally let the caller specify a `due_date` in `"YYYY-MM-DD"` format.
 - **Behavior**:
   - If `due_date` is omitted or invalid, the task is considered to have no due date.
@@ -58,7 +58,7 @@ In this final level, you combine multiple new features on top of the existing co
 ### `list_overdue_tasks(reference_date)`
 - **Purpose**: Return the titles of all tasks whose `due_date` is strictly before `reference_date`.
 - **Expected Behavior**:
-  - Compare each task’s `due_date` (if any) to `reference_date` (also `"YYYY-MM-DD"`).
+  - Compare each task's `due_date` (if any) to `reference_date` (also `"YYYY-MM-DD"`).
   - Return a Python-style list of titles in the order they were added, e.g. `"[Title1, Title2]"`.
   - If no tasks are overdue, return `"[]"`.
 
@@ -67,10 +67,40 @@ In this final level, you combine multiple new features on top of the existing co
 ## 3. Searching
 
 ### `search_tasks(keyword)`
-- **Purpose**: Return tasks (by title) whose **title or description** contains `keyword` (case-insensitive).
+- **Purpose**: Return id tasks (by title) whose **title or description** contains `keyword` (case-insensitive).
 - **Expected Behavior**:
   - If no tasks match, return `"[]"`.
   - Otherwise, return the matching titles in a Python-style list.
+
+---
+
+## 4. Modified `get_task_id(task_id)`
+
+**Purpose**  
+Return the task's title and description for the task with the given `task_id`. In addition, if the task has a priority set, include the priority in the return string.
+
+**Updated Behavior**
+1. If the task with the matching `task_id` exists:
+   - If the task has a priority set, return:
+     ```
+     <title>, <description>, priority: <priority>
+     ```
+   - Otherwise, return:
+     ```
+     <title>, <description>
+     ```
+2. If no such task exists, return:
+   ```
+   error: task not found
+   ```
+
+**Example Usage**
+```
+add_task("T1", "D1")   // Suppose this task is assigned id 1
+set_priority(1, "low")
+get_task_id(1)
+→ "T1, D1, priority: low"
+```
 
 ---
 
