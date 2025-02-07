@@ -1,12 +1,10 @@
-# Level 1 – Basic Add, List and Get
+# Level 1 – Add, List and Get
 
 In this initial level, you must implement three functions:
 
 1. `add_task(title, description)`
 2. `list_tasks()`
 3. `get_task(title)`
-
-No unique ID is involved yet.
 
 ---
 
@@ -37,7 +35,7 @@ add_task("Buy milk", "Get 2% milk")
 ## 2. `list_tasks()`
 
 **Purpose**
-Return all task titles in the order they were added.
+Return all task titles in the order they were added, oldest first.
 
 **Expected Behavior**
 - If tasks exist, return them in a Python-style list of titles, for example:
@@ -51,6 +49,8 @@ Return all task titles in the order they were added.
 
 **Example Usage**
 ```
+add_task("Buy milk", "Get 2% milk")
+add_task("Call John", "Call John at 10:00")
 list_tasks()
 → "[Buy milk, Call John]"
 ```
@@ -81,8 +81,21 @@ get_task("Buy milk")
 
 ---
 
-## Important Notes
+## Boilerplate
 
-- **No unique identifiers** (IDs) are introduced at this level.
-- A naive design might simply store `(title, description)` pairs in a list, which is sufficient for Level 1.
-- Your return strings must match exactly. Even small formatting differences can cause test failures.
+You may copy the below framework code into your solution file.
+
+```python
+class TaskManager:
+   def __init__(self):
+        pass
+   
+   def add_task(self, title, description):
+       pass
+   
+   def list_tasks(self):
+       pass
+   
+   def get_task(self, title):
+       pass
+```

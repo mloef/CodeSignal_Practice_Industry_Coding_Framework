@@ -1,9 +1,6 @@
-# Level 2 – Title-Based Update and Delete (Duplicates Possible)
+# Level 2 – Update and Delete
 
-In this level, you will **extend** the functionality from Level 1. You must retain the exact behavior of:
-
-- `add_task(title, description)` (unchanged from Level 1; do not alter its return string or logic).
-- `list_tasks()`
+In this level, you will **extend** the functionality from Level 1. You must retain the exact behavior of `add_task(title, description)`, `list_tasks()`, and `get_task(title)`.
 
 Now you must introduce:
 
@@ -58,8 +55,14 @@ Delete the first task whose title matches `title`.
 
 ---
 
-## Important Notes
+## Boilerplate
 
-- You **may not** modify the existing `add_task` or `list_tasks` outputs. They must behave exactly as they did in Level 1.
-- This level intentionally does **not** use IDs. Tasks are identified only by their title, which can lead to collisions.
-- You are free to store tasks however you like, but you must handle the possibility that multiple tasks share the same title.
+You may copy the below framework code into your solution file.
+
+```python
+   def update_task(self, title, new_title, new_description):
+       pass
+   
+   def delete_task(self, title):
+       pass
+```

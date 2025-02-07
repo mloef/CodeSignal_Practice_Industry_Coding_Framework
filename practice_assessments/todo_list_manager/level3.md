@@ -4,14 +4,14 @@ Level 3 adds **unique IDs** to your tasks for the first time. You must still kee
 
 ---
 
-## 1. `add_task_id(title, description)`
+## 1. `add_task_by_id(title, description)`
 
 **New Expected Behavior**
 1. If `title` or `description` is empty, return:
    ```
    error: invalid task data
    ```
-2. Otherwise, assign a unique integer ID (e.g. `1` for the first task, `2` for the second, etc.). Then return:
+2. Otherwise, assign a unique integer ID. Then return:
    ```
    task added: <title>, id: <task_id>
    ```
@@ -20,7 +20,7 @@ Level 3 adds **unique IDs** to your tasks for the first time. You must still kee
 
 ---
 
-## 2. `update_task_id(task_id, new_title, new_description)`
+## 2. `update_task_by_id(task_id, new_title, new_description)`
 
 **Purpose**
 Update a task using its integer ID.
@@ -41,7 +41,7 @@ Update a task using its integer ID.
 
 ---
 
-## 3. `delete_task_id(task_id)`
+## 3. `delete_task_by_id(task_id)`
 
 **Purpose**
 Delete a task using its integer ID.
@@ -58,7 +58,7 @@ Delete a task using its integer ID.
 
 ---
 
-## 4. `get_task_id(task_id)`
+## 4. `get_task_by_id(task_id)`
 
 **Purpose**
 Return the task's title and description for the task with the given `task_id`.
@@ -87,4 +87,24 @@ get_task_id(1)
 - You must not remove the existing title-based methods (`add_task(title, description)`, `update_task(title, new_title, new_description)`, `delete_task(title)`, and `get_task(title)`) from Levels 1 and 2. They must remain valid.
 - Now that tasks have IDs, you must maintain **two** different ways to locate them:
   1. By **title** (Level 2 and `get_task` defined above).
-  2. By **task_id** (new in Level 3 via `update_task_id`, `delete_task_id`, and `get_task_id`).
+  2. By **task_id** (new in Level 3 via `update_task_by_id`, `delete_task_by_id`, and `get_task_by_id`).
+
+---
+
+## Boilerplate
+
+You may copy the below framework code into your solution file.
+
+```python
+   def add_task_by_id(self, title, description):
+       pass
+   
+   def update_task_by_id(self, task_id, new_title, new_description):
+       pass
+   
+   def delete_task_by_id(self, task_id):
+       pass
+   
+   def get_task_by_id(self, task_id):
+       pass
+```

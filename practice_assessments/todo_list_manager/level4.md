@@ -4,24 +4,7 @@ In this final level, you combine multiple new features on top of the existing co
 
 ---
 
-## 1. Adding Priority and Completion
-
-### `set_priority(task_id, priority)`
-- **Purpose**: Assign a priority to an existing task.
-- **Valid Values**: `"low"`, `"medium"`, `"high"`.
-- **Expected Behavior**:
-  1. If no task exists for `task_id`, return:
-     ```
-     error: task not found
-     ```
-  2. If `priority` is not one of `"low"`, `"medium"`, `"high"`, you may return:
-     ```
-     error: invalid priority
-     ```
-  3. Otherwise, set the task's priority and return:
-     ```
-     priority set: <task_id>
-     ```
+## 1. Adding Completion
 
 ### `complete_task(task_id)`
 - **Purpose**: Mark the task as completed.
@@ -45,7 +28,7 @@ In this final level, you combine multiple new features on top of the existing co
 
 ## 2. Adding Due Dates
 
-### Revised `add_task_id(title, description, [due_date])`
+### Revised `add_task_by_id(title, description, [due_date])`
 - **Purpose**: Optionally let the caller specify a `due_date` in `"YYYY-MM-DD"` format.
 - **Behavior**:
   - If `due_date` is omitted or invalid, the task is considered to have no due date.
@@ -74,21 +57,63 @@ In this final level, you combine multiple new features on top of the existing co
 
 ---
 
-## 4. Modified `get_task_id(task_id)`
+## 4. Adding Priority
+
+### `set_priority(task_id, priority)`
+- **Purpose**: Assign a priority to an existing task.
+- **Valid Values**: `"low"`, `"medium"`, `"high"`.
+- **Expected Behavior**:
+  1. If no task exists for `task_id`, return:
+     ```
+     error: task not found
+     ```
+  2. If `priority` is not one of `"low"`, `"medium"`, `"high"`, you may return:
+     ```
+     error: invalid priority
+     ```
+  3. Otherwise, set the task's priority and return:
+     ```
+     priority set: <task_id>
+     ```
+
+### Modified `list_tasks([priority])`
+
+**Purpose**
+Return all task titles in the order they were added. If `priority` is provided, return only tasks with that priority.
+
+**Expected Behavior**
+- If `priority` is not one of `"low"`, `"medium"`, `"high"`, return:
+  ```
+  error: invalid priority
+  ```
+- If tasks exist for the given `priority`, return them in a Python-style list of titles, for example:
+  ```
+  [Buy milk, Call John]
+  ```
+- If no tasks exist for the given `priority`, return:
+  ```
+  []
+  ```
+- If `priority` is not provided, return all tasks in the order they were added.
+
+**Example Usage**
+```
+list_tasks()
+→ "[Buy milk, Call John]"
+```
+
+## 5. Modified `get_task_by_id(task_id)` and `get_task(title)`
 
 **Purpose**  
-Return the task's title and description for the task with the given `task_id`. In addition, if the task has a priority set, include the priority in the return string.
+Return the task's title and description for the task with the given `task_id` or `title`. In addition, if the task has a priority, completion status, and/or due date, include the priority, completion status, and/or due date in the return string.
 
 **Updated Behavior**
-1. If the task with the matching `task_id` exists:
-   - If the task has a priority set, return:
+1. If the task with the matching `task_id` or `title` exists:
+   - If the task has a priority, completion status, and due date, return:
      ```
-     <title>, <description>, priority: <priority>
+     <title>, <description>, completed: <completed>, priority: <priority>, due_date: <due_date>
      ```
-   - Otherwise, return:
-     ```
-     <title>, <description>
-     ```
+   - Remove fields as appropriate for tasks with other combinations of priority, completion status, and due date.
 2. If no such task exists, return:
    ```
    error: task not found
@@ -96,18 +121,48 @@ Return the task's title and description for the task with the given `task_id`. I
 
 **Example Usage**
 ```
-add_task("T1", "D1")   // Suppose this task is assigned id 1
+add_task("T1", "D1", "2025-01-01")   // Suppose this task is assigned id 1
 set_priority(1, "low")
-get_task_id(1)
-→ "T1, D1, priority: low"
+complete_task(1)
+get_task_by_id(1)
+→ "T1, D1, completed: True, priority: low, due_date: 2025-01-01"
 ```
 
 ---
 
-## Important Notes
-
-- All features from Levels 1–3 must remain operational. You cannot remove or break older functions or change their specified return strings.
-- Level 4 adds multiple new fields and concepts (priority, completion, due date, searching). A flexible internal design from previous levels will adapt more easily.
-- The final solution must handle collisions, ID-based references, and partial references from older methods.
-
 Congratulations on making it to the final level!
+
+---
+
+## Boilerplate
+
+You may copy the below framework code into your solution file.
+
+```python
+   def complete_task(self, task_id):
+       pass
+   
+   def list_incomplete_tasks(self):
+       pass
+    
+   def add_task_by_id(self, title, description, due_date=None):
+       pass
+   
+   def list_overdue_tasks(self, reference_date):
+       pass
+    
+   def search_tasks(self, keyword):
+       pass
+   
+   def set_priority(self, task_id, priority):
+       pass
+   
+   def list_tasks(self, priority=None):
+       pass
+   
+   def get_task_by_id(self, task_id):
+       pass
+   
+   def get_task(self, title):
+       pass
+```
