@@ -29,30 +29,30 @@ All operations that should be supported are listed below.
 
 ## Level 3 – Refactoring & Encapsulation
 
-Files may have a specified time-to-live (TTL). The following operations include a timestamp parameter:
+File operations now have timestamps. Timestamps never decrease over the sequence. File uploads may have a specified time-to-live (TTL). Your system should continue to pass tests for levels 1 and 2. However, tests for levels 3 and 4 will only use timestamped operations.
 
-- **FILE_UPLOAD_AT(timestamp, file_name, file_size)**
-- **FILE_UPLOAD_AT(timestamp, file_name, file_size, ttl)**
+- **FILE_UPLOAD_AT(timestamp, file_name, file_size, [ttl])**
   - Upload the file at the given timestamp.
-  - Return `"uploaded at <file_name>"` on success.
+  - Return `"uploaded <file_name>"` on success.
   - With a TTL, the file expires after the specified number of seconds.
   - If the file exists, return `"error: file already exists"`.
 
 - **FILE_GET_AT(timestamp, file_name)**
-  - Return `"got at <file_name>"` if the file is available at the given timestamp.
+  - Return `"got <file_name>"` if the file is available at the given timestamp.
   - If not found or expired, return `"file not found"`.
 
 - **FILE_COPY_AT(timestamp, file_from, file_to)**
   - Copy the file at the given timestamp.
-  - Return `"copied at <file_from> to <file_to>"` on success.
+  - Return `"copied <file_from> to <file_to>"` on success.
+  - The new file is considered to have been written at the given timestamp.
+  - If the old file had a TTL, the new file expires at the same time.
   - If the source is not found or expired, return `"error: source file not found"`.
 
 - **FILE_SEARCH_AT(timestamp, prefix)**
-  - Return `"found at [file1, file2, ...]"` for files that are alive at the given timestamp.
+  - Return `"found [file1, file2, ...]"` for files that are alive at the given timestamp.
 
 ## Level 4 – Extending Design & Functionality
 
 - **ROLLBACK(timestamp)**
   - Rollback the state of the file storage to the state at the specified timestamp.
-  - All TTLs should be recalculated relative to the rollback timestamp.
   - Return `"rollback to <timestamp>"`.

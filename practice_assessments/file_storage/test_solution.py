@@ -130,9 +130,9 @@ class Level3(unittest.TestCase):
         ]
         output = solution(test_data)
         self.assertEqual(output, [
-            "uploaded at TTLTest.txt",
-            "got at TTLTest.txt",
-            "got at TTLTest.txt",
+            "uploaded TTLTest.txt",
+            "got TTLTest.txt",
+            "got TTLTest.txt",
             "file not found"
         ])
 
@@ -147,11 +147,11 @@ class Level3(unittest.TestCase):
         ]
         output = solution(test_data)
         self.assertEqual(output, [
-            "uploaded at Mix1.txt",
-            "uploaded at Mix2.txt",
-            "copied at Mix1.txt to Mix1Copy.txt",
-            "found at [Mix2.txt, Mix1Copy.txt, Mix1.txt]",
-            "got at Mix2.txt",
+            "uploaded Mix1.txt",
+            "uploaded Mix2.txt",
+            "copied Mix1.txt to Mix1Copy.txt",
+            "found [Mix2.txt, Mix1Copy.txt, Mix1.txt]",
+            "got Mix2.txt",
             "file not found"
         ])
 
@@ -164,28 +164,28 @@ class Level3(unittest.TestCase):
         ]
         output = solution(test_data)
         self.assertEqual(output, [
-            "uploaded at SameTime1.txt",
-            "uploaded at SameTime2.txt",
-            "uploaded at SameTime3.txt",
-            "found at [SameTime3.txt, SameTime2.txt, SameTime1.txt]"
+            "uploaded SameTime1.txt",
+            "uploaded SameTime2.txt",
+            "uploaded SameTime3.txt",
+            "found [SameTime3.txt, SameTime2.txt, SameTime1.txt]"
         ])
 
     def test_complex_sequence(self):
         test_data = [
-            ["FILE_UPLOAD", "Normal.txt", "100kb"],
-            ["FILE_UPLOAD_AT", "2022-06-01T15:00:00", "Temp.txt", "80kb", "10"],
-            ["FILE_COPY", "Normal.txt", "NormalCopy.txt"],
-            ["FILE_SEARCH", "N"],
+            ["FILE_UPLOAD_AT", "2022-06-01T15:00:00", "Normal.txt", "100kb"],
+            ["FILE_UPLOAD_AT", "2022-06-01T15:00:01", "Temp.txt", "80kb", "10"],
+            ["FILE_COPY_AT", "2022-06-01T15:00:02", "Normal.txt", "NormalCopy.txt"],
+            ["FILE_SEARCH_AT", "2022-06-01T15:00:02", "N"],
             ["FILE_GET_AT", "2022-06-01T15:00:05", "Temp.txt"],
-            ["FILE_GET_AT", "2022-06-01T15:00:11", "Temp.txt"]
+            ["FILE_GET_AT", "2022-06-01T15:00:12", "Temp.txt"]
         ]
         output = solution(test_data)
         self.assertEqual(output, [
             "uploaded Normal.txt",
-            "uploaded at Temp.txt",
+            "uploaded Temp.txt",
             "copied Normal.txt to NormalCopy.txt",
             "found [NormalCopy.txt, Normal.txt]",
-            "got at Temp.txt",
+            "got Temp.txt",
             "file not found"
         ])
 
@@ -197,9 +197,9 @@ class Level3(unittest.TestCase):
         ]
         output = solution(test_data)
         self.assertEqual(output, [
-            "uploaded at Infinite.txt",
-            "got at Infinite.txt",
-            "got at Infinite.txt"
+            "uploaded Infinite.txt",
+            "got Infinite.txt",
+            "got Infinite.txt"
         ])
 
     def test_duplicate_timestamp_upload(self):
@@ -209,7 +209,7 @@ class Level3(unittest.TestCase):
         ]
         output = solution(test_data)
         self.assertEqual(output, [
-            "uploaded at DupFile.txt",
+            "uploaded DupFile.txt",
             "error: file already exists"
         ])
 
@@ -222,17 +222,6 @@ class Level3(unittest.TestCase):
             "error: source file not found"
         ])
 
-    def test_get_before_upload(self):
-        test_data = [
-            ["FILE_UPLOAD_AT", "2022-09-01T12:00:00", "LateFile.txt", "100kb"],
-            ["FILE_GET_AT", "2022-09-01T11:59:59", "LateFile.txt"]
-        ]
-        output = solution(test_data)
-        self.assertEqual(output, [
-            "uploaded at LateFile.txt",
-            "file not found"
-        ])
-
     def test_copy_expired_timestamp(self):
         test_data = [
             ["FILE_UPLOAD_AT", "2022-10-01T10:00:00", "ExpireFile.txt", "200kb", "5"],
@@ -240,7 +229,7 @@ class Level3(unittest.TestCase):
         ]
         output = solution(test_data)
         self.assertEqual(output, [
-            "uploaded at ExpireFile.txt",
+            "uploaded ExpireFile.txt",
             "error: source file not found"
         ])
 
@@ -253,10 +242,10 @@ class Level3(unittest.TestCase):
         ]
         output = solution(test_data)
         self.assertEqual(output, [
-            "uploaded at SourceFile.txt",
-            "uploaded at DestFile.txt",
-            "copied at SourceFile.txt to DestFile.txt",
-            "got at DestFile.txt"
+            "uploaded SourceFile.txt",
+            "uploaded DestFile.txt",
+            "copied SourceFile.txt to DestFile.txt",
+            "got DestFile.txt"
         ])
 
 # Level 4: Rollback operations
@@ -272,12 +261,12 @@ class Level4(unittest.TestCase):
         ]
         output = solution(test_data)
         self.assertEqual(output, [
-            "uploaded at Rollback1.txt",
-            "uploaded at Rollback2.txt",
-            "copied at Rollback1.txt to Rollback1Copy.txt",
+            "uploaded Rollback1.txt",
+            "uploaded Rollback2.txt",
+            "copied Rollback1.txt to Rollback1Copy.txt",
             "rollback to 2022-03-01T08:05:00",
-            "got at Rollback2.txt",
-            "found at [Rollback2.txt, Rollback1.txt]"
+            "got Rollback2.txt",
+            "found [Rollback2.txt, Rollback1.txt]"
         ])
 
     def test_multiple_rollback(self):
@@ -285,14 +274,14 @@ class Level4(unittest.TestCase):
             ["FILE_UPLOAD_AT", "2022-05-01T09:00:00", "Multi1.txt", "100kb"],
             ["FILE_UPLOAD_AT", "2022-05-01T09:05:00", "Multi2.txt", "200kb", "300"],
             ["ROLLBACK", "2022-05-01T09:00:00"],
-            ["FILE_UPLOAD", "Multi3.txt", "150kb"],
-            ["FILE_COPY", "Multi1.txt", "Multi1Copy.txt"],
-            ["FILE_SEARCH", "Multi"]
+            ["FILE_UPLOAD_AT", "2022-05-01T09:06:00", "Multi3.txt", "150kb"],
+            ["FILE_COPY_AT", "2022-05-01T09:06:00", "Multi1.txt", "Multi1Copy.txt"],
+            ["FILE_SEARCH_AT", "2022-05-01T09:06:00", "Multi"]
         ]
         output = solution(test_data)
         self.assertEqual(output, [
-            "uploaded at Multi1.txt",
-            "uploaded at Multi2.txt",
+            "uploaded Multi1.txt",
+            "uploaded Multi2.txt",
             "rollback to 2022-05-01T09:00:00",
             "uploaded Multi3.txt",
             "copied Multi1.txt to Multi1Copy.txt",
@@ -308,8 +297,8 @@ class Level4(unittest.TestCase):
         ]
         output = solution(test_data)
         self.assertEqual(output, [
-            "uploaded at TempTTL.txt",
-            "got at TempTTL.txt",
+            "uploaded TempTTL.txt",
+            "got TempTTL.txt",
             "rollback to 2022-12-01T10:00:00",
             "file not found"
         ])
@@ -322,9 +311,28 @@ class Level4(unittest.TestCase):
         ]
         output = solution(test_data)
         self.assertEqual(output, [
-            "uploaded at FutureFile.txt",
+            "uploaded FutureFile.txt",
             "rollback to 2022-12-01T10:59:59",
             "file not found"
+        ])
+
+    def test_rollback_overwrite(self):
+        test_data = [
+            ["FILE_UPLOAD_AT", "2022-03-01T08:00:00", "Rollback1.txt", "120kb"],
+            ["FILE_UPLOAD_AT", "2022-03-01T08:05:00", "Rollback2.txt", "130kb"],
+            ["FILE_COPY_AT", "2022-03-01T08:10:00", "Rollback1.txt", "Rollback2.txt"],
+            ["ROLLBACK", "2022-03-01T08:05:00"],
+            ["FILE_GET_AT", "2022-03-01T08:10:00", "Rollback2.txt"],
+            ["FILE_SEARCH_AT", "2022-03-01T08:10:00", "Rollback"]
+        ]
+        output = solution(test_data)
+        self.assertEqual(output, [
+            "uploaded Rollback1.txt",
+            "uploaded Rollback2.txt",
+            "copied Rollback1.txt to Rollback2.txt",
+            "rollback to 2022-03-01T08:05:00",
+            "got Rollback2.txt",
+            "found [Rollback2.txt, Rollback1.txt]"
         ])
 
 if __name__ == '__main__':
