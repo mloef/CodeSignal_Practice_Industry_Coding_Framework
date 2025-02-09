@@ -2,194 +2,157 @@ from collections import OrderedDict
 from datetime import datetime
 
 
+DATE_FORMAT = "%Y-%m-%d"
+
+class Task:
+   def __init__(self, title, description, due_date = None):
+      self.title = title
+      self.description = description
+      self.due_date = due_date
+      self.priority = None
+      self.completed = False
+
+
 class TaskManager:
-    def __init__(self):
-        self.tasks = OrderedDict()
-        self.id = 0
-        self.completed = {}
-        self.due_dates = {}
-        self.priorities = {}
+   def __init__(self):
+      self.tasks = OrderedDict()
+      self.last_id = -1
 
-        self.old_tasks = OrderedDict()
+   def add_task(self, title, description, due_date=None):
+      if not title or not description:
+         raise ValueError("Invalid task data: parameters must not be empty")
+      
+      if due_date:
+         try:
+            due_date = datetime.strptime(due_date, DATE_FORMAT)
+         except ValueError:
+            raise ValueError("Invalid date format. Use YYYY-MM-DD")
 
+      self.last_id += 1  
+      self.tasks[self.last_id] = Task(title, description, due_date)
 
-    def add_task(self, title, description):
-        if not title or not description:
-            return "error: invalid task data"
+      return f"task added: {title}"
 
-        if not self.old_tasks.get(title):
-            self.old_tasks[title] = []
-        
-        self.old_tasks[title].append(description)
+   def add_task_by_id(self, title, description, due_date=None):
+      return self.add_task(title, description, due_date) + ", id: " + str(self.last_id)
+         
+   def list_tasks(self, priority = None):
+      if priority:
+         self._validate_priority(priority)
+         titles = [task.title for task in self.tasks.values() if task.priority is priority]
+      else:
+         titles = [task.title for task in self.tasks.values()]
 
-        return f"task added: {title}"
+      return f"[{', '.join(titles)}]"
 
+   def _title_to_id(self, title):
+      if not title:
+         raise ValueError("Invalid task data: parameters must not be empty")
+      
+      task_id = None
 
-    def add_task_id(self, title, description, due_date=None):
-        if not title or not description:
-            return "error: invalid task data"
+      for id, task in self.tasks.items():
+         if task.title == title:
+            task_id = id
+            break
+      
+      # not strictly necessary because we always catch
+      # it in _get_task_by_id below
+      if task_id is None:
+         raise KeyError("Task not found")
 
-        self.tasks[self.id] = (title, description)
+      return task_id
 
-        if due_date:
-            valid_date = False
-            try:
-                valid_date = datetime.strptime(due_date, '%Y-%m-%d')
-            except ValueError:
-                pass
-            
-            if valid_date:
-                self.due_dates[self.id] = due_date
+   def _get_task_by_id(self, task_id):
+      task = self.tasks.get(task_id)
 
-        self.id += 1
+      if task is None:
+         raise KeyError("Task not found")
+      
+      return task
 
-        return f"task added: {title}, id: {self.id - 1}"
+   def get_task(self, title):
+      task_id = self._title_to_id(title)
+      
+      return self.get_task_by_id(task_id)
+   
+   def get_task_by_id(self, task_id):
+      task = self._get_task_by_id(task_id)
 
+      suffix = ""
+      if task.completed:
+         suffix += ", completed: True"
+      if task.priority:
+         suffix += f", priority: {task.priority}"
+      if task.due_date:
+         suffix += f", due date: {task.due_date.strftime(DATE_FORMAT)}"
+      
+      return f"{task.title}, {task.description}" + suffix
+      
+   def _update_task_by_id(self, task_id, new_title, new_description):
+      if not new_title or not new_description:
+         raise ValueError("Invalid task data: parameters must not be empty")
+      
+      self._get_task_by_id(task_id) # throws if task does not exist
+      
+      del self.tasks[task_id] # for ordering
+      self.tasks[task_id] = Task(new_title, new_description)
 
-    def list_tasks(self):
-        if self.old_tasks:
-            return f'[{", ".join(self.old_tasks.keys())}]'
-        return f'[{", ".join([x[0] for x in self.tasks.values()])}]'
+      return "task updated: "
 
+   def update_task(self, title, new_title, new_description):
+      task_id = self._title_to_id(title)
+      
+      return self._update_task_by_id(task_id, new_title, new_description) + title
 
-    def get_task(self, title):
-        #return "disabled"
-        possible_tasks = self.old_tasks.get(title)
+   def update_task_by_id(self, task_id, new_title, new_description):
+      return self._update_task_by_id(task_id, new_title, new_description) + str(task_id)
+   
+   def _delete_task_by_id(self, task_id):
+      self._get_task_by_id(task_id) # throws if task does not exist
+      
+      del self.tasks[task_id]
+      return "task deleted: "
 
-        if not possible_tasks:
-            return "error: task not found"
+   def delete_task(self, title):
+      task_id = self._title_to_id(title)
 
-        return f"{title}, {possible_tasks[0]}"
-
-
-    def update_task(self, title, new_title, new_description):
-        #return "disabled"
-        if not new_title or not new_description:
-            return "error: invalid task data"
-
-        possible_tasks = self.old_tasks.get(title)
-
-        if not possible_tasks:
-            return "error: task not found"
-
-        self.old_tasks[title] = possible_tasks[1:]
-
-        if not self.old_tasks.get(new_title):
-            self.old_tasks[new_title] = []
-
-        self.old_tasks[new_title].append(new_description)
-
-        return f"task updated: {title}"
-
-
-    def delete_task(self, title):
-        #return "disabled"
-        possible_tasks = self.old_tasks.get(title)
-
-        if not possible_tasks:
-            return "error: task not found"
-
-        self.old_tasks[title] = possible_tasks[1:]
-
-        return f"task deleted: {title}"
-
-
-    def delete_task_id(self, id):
-        if not self.tasks.get(id):
-            return "error: task not found"
-
-        del self.tasks[id]
-
-        return f"task deleted: {id}"
-
-
-    def get_task_id(self, id):
-        task = self.tasks.get(id)
-
-        if not task:
-            return "error: task not found"
-
-        priority = self.priorities.get(id)
-
-        if priority:
-            return f"{task[0]}, {task[1]}, priority: {priority}"
-
-        return f"{task[0]}, {task[1]}"
-
-    def update_task_id(self, id, new_title, new_description):
-        if not new_title or not new_description:
-            return "error: invalid task data"
-
-        task = self.tasks.get(id)
-
-        if not task:
-            return "error: task not found"
-
-        self.tasks[id] = (new_title, new_description)
-
-        return f"task updated: {id}"
+      return self._delete_task_by_id(task_id) + title
+   
+   def delete_task_by_id(self, task_id):
+      return self._delete_task_by_id(task_id) + str(task_id)
+   
+   def complete_task(self, task_id):
+     self._get_task_by_id(task_id).completed = True
+     return f"task completed: {task_id}"
+   
+   def list_incomplete_tasks(self):
+      titles = [task.title for task in self.tasks.values() if not task.completed]
+      return f"[{', '.join(titles)}]"
+   
+   def list_overdue_tasks(self, reference_date):
+      try:
+         reference_date = datetime.strptime(reference_date, DATE_FORMAT)
+      except ValueError:
+         raise ValueError("Invalid date format. Use YYYY-MM-DD")
+      
+      titles = [task.title for task in self.tasks.values() if task.due_date and task.due_date < reference_date]
+      return f"[{', '.join(titles)}]"
     
+   def search_tasks(self, keyword):
+      keyword = keyword.lower()
+      titles = [task.title for task in self.tasks.values() if keyword in task.title.lower() or keyword in task.description.lower()]
+      return f"[{', '.join(titles)}]"
+   
+   def _validate_priority(self, priority):
+      if priority not in ["low", "medium", "high"]:
+         raise ValueError("Invalid priority value")
 
-    def set_priority(self, id, priority):
-        task = self.tasks.get(id)
+   def set_priority(self, task_id, priority):
+      self._validate_priority(priority)
+      self._get_task_by_id(task_id).priority = priority
 
-        if not task:
-            return "error: task not found"
-        
-        if priority not in ["low", "medium", "high"]:
-            return "error: invalid priority"
-
-        self.priorities[id] = priority
-
-        return f"priority set: {id}"
-    
-
-    def complete_task(self, id):
-        task = self.tasks.get(id)
-
-        if not task:
-            return "error: task not found"
-        
-        self.completed[id] = True
-
-        return f"task completed: {id}"
-    
-
-    def list_incomplete_tasks(self):
-        task_ids = set(self.tasks.keys())
-
-        incomplete_ids = task_ids - set(self.completed.keys())
-
-        return f'[{", ".join([self.tasks[x][0] for x in incomplete_ids])}]'
-        
-
-    def list_overdue_tasks(self, reference_date):
-        valid_date = False
-        try:
-            valid_date = datetime.strptime(reference_date, '%Y-%m-%d')
-        except ValueError:
-            pass
-
-        if not valid_date:
-            return "[]"
-        
-
-        result = []
-
-        for id, due_date in self.due_dates.items():
-            if due_date < reference_date:
-                result.append(self.tasks[id][0])
-        
-        return f'[{", ".join(result)}]'
+      return f"priority set: {task_id}"
 
 
-    def search_tasks(self, keyword):
-        matches = []
-
-        keyword = keyword.lower()
-
-        for title, description in self.tasks.values():
-            if keyword in title.lower() or keyword in description.lower():
-                matches.append(title)
-
-        return f'[{", ".join(matches)}]'
+# TODO: think about how to make this neater and clearer to read, with less code golf

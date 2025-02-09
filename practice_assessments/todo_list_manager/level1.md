@@ -14,9 +14,9 @@ In this initial level, you must implement three functions:
 Create a new task using the two string parameters `title` and `description`.
 
 **Expected Behavior**
-1. If either `title` or `description` is an empty string, return:
+1. If either `title` or `description` is an empty string, raise a `ValueError` with the message:
    ```
-   error: invalid task data
+   "Invalid task data: parameters must not be empty"
    ```
 2. Otherwise, return:
    ```
@@ -63,13 +63,17 @@ list_tasks()
 Return the task's title and description for the task matching the given `title`.
 
 **Expected Behavior**
-1. If a task with the matching `title` exists (if multiple exist, choose the first one added), return:
+1. If either `title` is an empty string, raise a `ValueError` with the message:
+   ```
+   "Invalid task data: parameters must not be empty"
+   ```
+2. If no task with the matching `title` exists, raise a `KeyError` with the message:
+   ```
+   "Task not found"
+   ```
+3. If a task with the matching `title` exists (if multiple exist, choose the first one added), return:
    ```
    <title>, <description>
-   ```
-2. If no such task exists, return:
-   ```
-   error: task not found
    ```
 
 **Example Usage**
@@ -88,14 +92,14 @@ You may copy the below framework code into your solution file.
 ```python
 class TaskManager:
    def __init__(self):
-        pass
+      pass
    
    def add_task(self, title, description):
-       pass
+      pass
    
    def list_tasks(self):
-       pass
+      pass
    
    def get_task(self, title):
-       pass
+      pass
 ```

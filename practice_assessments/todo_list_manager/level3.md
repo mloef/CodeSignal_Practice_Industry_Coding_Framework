@@ -7,9 +7,9 @@ Level 3 adds **unique IDs** to your tasks for the first time. You must still kee
 ## 1. `add_task_by_id(title, description)`
 
 **New Expected Behavior**
-1. If `title` or `description` is empty, return:
+1. If `title` or `description` is empty, raise a `ValueError` with the message:
    ```
-   error: invalid task data
+   "Invalid task data: parameters must not be empty"
    ```
 2. Otherwise, assign a unique integer ID. Then return:
    ```
@@ -26,13 +26,13 @@ Level 3 adds **unique IDs** to your tasks for the first time. You must still kee
 Update a task using its integer ID.
 
 **Expected Behavior**
-1. If `new_title` or `new_description` is empty, return:
+1. If  `new_title`, or `new_description` is empty, raise a `ValueError` with the message:
    ```
-   error: invalid task data
+   "Invalid task data: parameters must not be empty"
    ```
-2. If no task exists for `task_id`, return:
+2. If no task exists for `task_id`, raise a `KeyError` with the message:
    ```
-   error: task not found
+   "Task not found"
    ```
 3. Otherwise, update the task's title and description and return:
    ```
@@ -47,9 +47,9 @@ Update a task using its integer ID.
 Delete a task using its integer ID.
 
 **Expected Behavior**
-1. If no task exists for `task_id`, return:
+1. If no task exists for `task_id`, raise a `KeyError` with the message:
    ```
-   error: task not found
+   "Task not found"
    ```
 2. Otherwise, remove that task and return:
    ```
@@ -68,9 +68,9 @@ Return the task's title and description for the task with the given `task_id`.
    ```
    <title>, <description>
    ```
-2. If no such task exists, return:
+2. If no such task exists, raise a `KeyError` with the message:
    ```
-   error: task not found
+   "Task not found"
    ```
 
 **Example Usage**
@@ -97,14 +97,14 @@ You may copy the below framework code into your solution file.
 
 ```python
    def add_task_by_id(self, title, description):
-       pass
+      pass
    
    def update_task_by_id(self, task_id, new_title, new_description):
-       pass
+      pass
    
    def delete_task_by_id(self, task_id):
-       pass
+      pass
    
    def get_task_by_id(self, task_id):
-       pass
+      pass
 ```
